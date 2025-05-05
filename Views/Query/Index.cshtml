@@ -1,94 +1,139 @@
-﻿// Views/Query/Index.cshtml
-@model messageSwitch_UI.Models.DriverLicenseQueryModel
+﻿@model messageSwitch_UI.Models.DriverLicenseQueryModel
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DQ - Nlets Query Driver's License</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
     <div class="container mt-4">
-        <h2 class="bg-primary text-white p-2">DQ - Nlets Query Driver's License</h2>
-        <form asp-action="Submit" method="post" class="bg-light p-4">
-            <div class="form-group">
-                <label asp-for="ORI">Originating Agency Identifier (ORI)</label>
-                <input asp-for="ORI" class="form-control" />
-                <span asp-validation-for="ORI" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="DST">Destination State (DST)</label>
-                <select asp-for="DST" class="form-control">
-                    <option value="PA">PA</option>
-                    <option value="AL">AL</option>
-                    <option value="AK">AK</option>
-                    <option value="CA">CA</option>
-                    <option value="FL">FL</option>
-                    <option value="NY">NY</option>
-                </select>
-                <span asp-validation-for="DST" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="OCF">Optional Control Field (OCF)</label>
-                <input asp-for="OCF" class="form-control" />
-            </div>
-
-            <h4>Enter One of the Following Fields or Sets</h4>
-
-            <div class="form-group">
-                <label asp-for="OLN">Operator's License Number (OLN)</label>
-                <input asp-for="OLN" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="NAM">Name (NAM)</label>
-                <input asp-for="NAM" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="DOB">Date of Birth (DOB)</label>
-                <input asp-for="DOB" class="form-control" placeholder="MM/DD/YYYY" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="SEX">Sex (SEX)</label>
-                <div>
-                    <label><input type="radio" asp-for="SEX" value="M" /> Male</label>
-                    <label><input type="radio" asp-for="SEX" value="F" /> Female</label>
-                </div>
-                <span asp-validation-for="SEX" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="OLS">State (OLS) (Use only with destination CL)</label>
-                <input asp-for="OLS" class="form-control" />
-            </div>
-
-            <div class="form-group form-check">
-                <input asp-for="IMQ" type="checkbox" class="form-check-input" />
-                <label asp-for="IMQ" class="form-check-label">Image Request (IMQ)</label>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="reset" class="btn btn-secondary">Delete</button>
-
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger mt-3">
-                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        <p>@error.ErrorMessage</p>
-                    }
-                </div>
-            }
-        </form>
+        <!-- Button to open the form in a popup -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#queryModal">
+            Open Query Form
+        </button>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <!-- Modal for the form -->
+    <div class="modal fade" id="queryModal" tabindex="-1" aria-labelledby="queryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="queryModalLabel">DQ - Nlets Query Driver's License</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="Submit" method="post" class="needs-validation" novalidate>
+                        <!-- Required Fields -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="ORI" class="form-label fw-bold">Originating Agency Identifier (ORI)</label>
+                                <input asp-for="ORI" class="form-control" value="F1000000" required />
+                                <div class="invalid-feedback">ORI is required</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="DST" class="form-label fw-bold">Destination State (DST)</label>
+                                <select asp-for="DST" class="form-select" required>
+                                    <option value="PA">PA</option>
+                                    <option value="AL">AL</option>
+                                    <option value="AK">AK</option>
+                                    <option value="CA">CA</option>
+                                    <option value="FL">FL</option>
+                                    <option value="NY">NY</option>
+                                </select>
+                                <div class="invalid-feedback">Destination State is required</div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label asp-for="OCF" class="form-label fw-bold">Optional Control Field (OCF)</label>
+                                <input asp-for="OCF" class="form-control" />
+                            </div>
+                        </div>
+
+                        <!-- Enter One of the Following Fields or Sets -->
+                        <h5 class="mt-4 fw-bold">Enter One of the Following Fields or Sets</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="OLN" class="form-label fw-bold">Operator's License Number (OLN)</label>
+                                <input asp-for="OLN" class="form-control" value="GHJY88888877777777" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="NAM" class="form-label fw-bold">Name (NAM)</label>
+                                <input asp-for="NAM" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="DOB" class="form-label fw-bold">Date of Birth (DOB)</label>
+                                <input asp-for="DOB" class="form-control" placeholder="MM/DD/YYYY" />
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SEX" class="form-label fw-bold">Sex (SEX)</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" asp-for="SEX" value="M" />
+                                    <label class="form-check-label">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" asp-for="SEX" value="F" />
+                                    <label class="form-check-label">Female</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Optional Field -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="OLS" class="form-label fw-bold">State (OLS) (Use only with destination CL)</label>
+                                <input asp-for="OLS" class="form-control" value="CA" />
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check mt-4">
+                                    <input asp-for="IMQ" type="checkbox" class="form-check-input" />
+                                    <label asp-for="IMQ" class="form-check-label">Image Request (IMQ)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary me-2">Submit</button>
+                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Delete</button>
+                        </div>
+
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger mt-3">
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <p>@error.ErrorMessage</p>
+                                }
+                            </div>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        // Bootstrap validation
+        (function () {
+            'use strict';
+            var forms = document.querySelectorAll('.needs-validation');
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
 </body>
 </html>
