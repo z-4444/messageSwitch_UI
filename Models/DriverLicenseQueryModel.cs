@@ -10,15 +10,15 @@ namespace messageSwitch_UI.Models
         [Required(ErrorMessage = "Destination State is required")]
         public string DST { get; set; } = "PA";
 
-        public string OCF { get; set; }
+        public string? OCF { get; set; }
 
-        public string OLN { get; set; } = "GHJY88888877777777";
+        public string? OLN { get; set; } = "GHJY88888877777777";
 
-        public string NAM { get; set; }
+        public string? NAM { get; set; }
 
-        public string DOB { get; set; }
+        public string? DOB { get; set; }
 
-        public string SEX { get; set; }
+        public string? SEX { get; set; }
 
         public string OLS { get; set; } = "CA";
 
