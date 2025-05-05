@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\messageSwitch_UI.props" />
-</Project>
