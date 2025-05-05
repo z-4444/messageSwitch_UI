@@ -1,0 +1,94 @@
+﻿// Views/Query/Index.cshtml
+@model messageSwitch_UI.Models.DriverLicenseQueryModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DQ - Nlets Query Driver's License</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="bg-primary text-white p-2">DQ - Nlets Query Driver's License</h2>
+        <form asp-action="Submit" method="post" class="bg-light p-4">
+            <div class="form-group">
+                <label asp-for="ORI">Originating Agency Identifier (ORI)</label>
+                <input asp-for="ORI" class="form-control" />
+                <span asp-validation-for="ORI" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DST">Destination State (DST)</label>
+                <select asp-for="DST" class="form-control">
+                    <option value="PA">PA</option>
+                    <option value="AL">AL</option>
+                    <option value="AK">AK</option>
+                    <option value="CA">CA</option>
+                    <option value="FL">FL</option>
+                    <option value="NY">NY</option>
+                </select>
+                <span asp-validation-for="DST" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="OCF">Optional Control Field (OCF)</label>
+                <input asp-for="OCF" class="form-control" />
+            </div>
+
+            <h4>Enter One of the Following Fields or Sets</h4>
+
+            <div class="form-group">
+                <label asp-for="OLN">Operator's License Number (OLN)</label>
+                <input asp-for="OLN" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NAM">Name (NAM)</label>
+                <input asp-for="NAM" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DOB">Date of Birth (DOB)</label>
+                <input asp-for="DOB" class="form-control" placeholder="MM/DD/YYYY" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SEX">Sex (SEX)</label>
+                <div>
+                    <label><input type="radio" asp-for="SEX" value="M" /> Male</label>
+                    <label><input type="radio" asp-for="SEX" value="F" /> Female</label>
+                </div>
+                <span asp-validation-for="SEX" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="OLS">State (OLS) (Use only with destination CL)</label>
+                <input asp-for="OLS" class="form-control" />
+            </div>
+
+            <div class="form-group form-check">
+                <input asp-for="IMQ" type="checkbox" class="form-check-input" />
+                <label asp-for="IMQ" class="form-check-label">Image Request (IMQ)</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-secondary">Delete</button>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger mt-3">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <p>@error.ErrorMessage</p>
+                    }
+                </div>
+            }
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>
