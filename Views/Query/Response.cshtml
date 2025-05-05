@@ -1,0 +1,19 @@
+﻿// Views/Query/Response.cshtml
+@model object
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Query Response</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Query Response</h2>
+        <pre class="border p-3 bg-light">
+            @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model, new System.Text.Json.JsonSerializerOptions { WriteIndented = true }))
+        </pre>
+        <a href="@Url.Action("Index")" class="btn btn-primary">Back to Form</a>
+    </div>
+</body>
+</html>
