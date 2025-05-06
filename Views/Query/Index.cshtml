@@ -1,22 +1,43 @@
-﻿@model messageSwitch_UI.Models.DriverLicenseQueryModel
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DQ - Nlets Query Driver's License</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <style>
+        
+        .response-card {
+            border: 1px solid #ced4da; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+        }
+
+        .response-card.success {
+            background-color: #e7f3e7;
+            border-left: 5px solid #28a745;
+        }
+
+        .response-card.error {
+            background-color: #f8e1e1; 
+            border-left: 5px solid #dc3545;
+        }
+
+        .response-card .card-body {
+            padding: 1rem;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-4">
-        <!-- Button to open the form in a popup -->
+       
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#queryModal">
             Open Query Form
         </button>
     </div>
 
-    <!-- Modal for the form -->
     <div class="modal fade" id="queryModal" tabindex="-1" aria-labelledby="queryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -25,17 +46,25 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form asp-action="Submit" method="post" class="needs-validation" novalidate>
+                    <form id="queryForm" class="needs-validation" novalidate>
+
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="apiUrl" class="form-label fw-bold">API Endpoint URL</label>
+                                <input type="url" id="apiUrl" name="apiUrl" class="form-control" value="https://your-messageswitch-api-endpoint/api/query" required />
+                                <div class="invalid-feedback">API Endpoint URL is required</div>
+                            </div>
+                        </div>
                         <!-- Required Fields -->
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label asp-for="ORI" class="form-label fw-bold">Originating Agency Identifier (ORI)</label>
-                                <input asp-for="ORI" class="form-control" value="F1000000" required />
+                                <label for="ORI" class="form-label fw-bold">Originating Agency Identifier (ORI)</label>
+                                <input type="text" id="ORI" name="ORI" class="form-control" value="F1000000" required />
                                 <div class="invalid-feedback">ORI is required</div>
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="DST" class="form-label fw-bold">Destination State (DST)</label>
-                                <select asp-for="DST" class="form-select" required>
+                                <label for="DST" class="form-label fw-bold">Destination State (DST)</label>
+                                <select id="DST" name="DST" class="form-select" required>
                                     <option value="PA">PA</option>
                                     <option value="AL">AL</option>
                                     <option value="AK">AK</option>
@@ -48,8 +77,8 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-12">
-                                <label asp-for="OCF" class="form-label fw-bold">Optional Control Field (OCF)</label>
-                                <input asp-for="OCF" class="form-control" />
+                                <label for="OCF" class="form-label fw-bold">Optional Control Field (OCF)</label>
+                                <input type="text" id="OCF" name="OCF" class="form-control" />
                             </div>
                         </div>
 
@@ -57,28 +86,28 @@
                         <h5 class="mt-4 fw-bold">Enter One of the Following Fields or Sets</h5>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label asp-for="OLN" class="form-label fw-bold">Operator's License Number (OLN)</label>
-                                <input asp-for="OLN" class="form-control" value="GHJY88888877777777" />
+                                <label for="OLN" class="form-label fw-bold">Operator's License Number (OLN)</label>
+                                <input type="text" id="OLN" name="OLN" class="form-control" value="GHJY88888877777777" />
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="NAM" class="form-label fw-bold">Name (NAM)</label>
-                                <input asp-for="NAM" class="form-control" />
+                                <label for="NAM" class="form-label fw-bold">Name (NAM)</label>
+                                <input type="text" id="NAM" name="NAM" class="form-control" />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label asp-for="DOB" class="form-label fw-bold">Date of Birth (DOB)</label>
-                                <input asp-for="DOB" class="form-control" placeholder="MM/DD/YYYY" />
+                                <label for="DOB" class="form-label fw-bold">Date of Birth (DOB)</label>
+                                <input type="text" id="DOB" name="DOB" class="form-control" placeholder="MM/DD/YYYY" />
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="SEX" class="form-label fw-bold">Sex (SEX)</label>
+                                <label for="SEX" class="form-label fw-bold">Sex (SEX)</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" asp-for="SEX" value="M" />
-                                    <label class="form-check-label">Male</label>
+                                    <input class="form-check-input" type="radio" id="SEX_M" name="SEX" value="M" />
+                                    <label class="form-check-label" for="SEX_M">Male</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" asp-for="SEX" value="F" />
-                                    <label class="form-check-label">Female</label>
+                                    <input class="form-check-input" type="radio" id="SEX_F" name="SEX" value="F" />
+                                    <label class="form-check-label" for="SEX_F">Female</label>
                                 </div>
                             </div>
                         </div>
@@ -86,13 +115,13 @@
                         <!-- Optional Field -->
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label asp-for="OLS" class="form-label fw-bold">State (OLS) (Use only with destination CL)</label>
-                                <input asp-for="OLS" class="form-control" value="CA" />
+                                <label for="OLS" class="form-label fw-bold">State (OLS) (Use only with destination CL)</label>
+                                <input type="text" id="OLS" name="OLS" class="form-control" value="CA" />
                             </div>
                             <div class="col-md-6">
                                 <div class="form-check mt-4">
-                                    <input asp-for="IMQ" type="checkbox" class="form-check-input" />
-                                    <label asp-for="IMQ" class="form-check-label">Image Request (IMQ)</label>
+                                    <input type="checkbox" id="IMQ" name="IMQ" class="form-check-input" />
+                                    <label class="form-check-label" for="IMQ">Image Request (IMQ)</label>
                                 </div>
                             </div>
                         </div>
@@ -100,18 +129,15 @@
                         <!-- Action Buttons -->
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary me-2">Submit</button>
-                            <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Delete</button>
+                            <button type="button" class="btn btn-secondary" id="deleteButton">Delete</button>
                         </div>
 
-                        @if (!ViewData.ModelState.IsValid)
-                        {
-                            <div class="alert alert-danger mt-3">
-                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                                {
-                                    <p>@error.ErrorMessage</p>
-                                }
+                        <hr class="mt-4 mb-3" id="responseDivider" style="display: none;" />
+                        <div id="responseArea" style="display: none;">
+                            <div id="responseCard" class="card response-card">
+                                <div class="card-body" id="responseMessage"></div>
                             </div>
-                        }
+                        </div>
                     </form>
                 </div>
             </div>
@@ -119,21 +145,86 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
-        // Bootstrap validation
         (function () {
             'use strict';
+
+            // Bootstrap validation
             var forms = document.querySelectorAll('.needs-validation');
             Array.prototype.slice.call(forms).forEach(function (form) {
                 form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    if (form.checkValidity()) {
+                        var formData = {
+                            ORI: $('#ORI').val(),
+                            DST: $('#DST').val(),
+                            OCF: $('#OCF').val(),
+                            OLN: $('#OLN').val(),
+                            NAM: $('#NAM').val(),
+                            DOB: $('#DOB').val(),
+                            SEX: $('input[name="SEX"]:checked').val(),
+                            OLS: $('#OLS').val(),
+                            IMQ: $('#IMQ').is(':checked')
+                        };
+
+                        var apiUrl = $('#apiUrl').val().trim();
+
+                        $.ajax({
+                            url: apiUrl,
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(formData),
+                            success: function (response) {
+                                
+                                $('#responseDivider').show();
+                                $('#responseArea').show();
+
+                                $('#responseCard')
+                                    .removeClass('error')
+                                    .addClass('success');
+
+                                // Display success message
+                                $('#responseMessage')
+                                    .text('Query submitted successfully! Response: ' + JSON.stringify(response));
+                            },
+                            error: function (xhr, status, error) {
+                                
+                                $('#responseDivider').show();
+                                $('#responseArea').show();
+
+                                $('#responseCard')
+                                    .removeClass('success')
+                                    .addClass('error');
+
+                                $('#responseMessage')
+                                    .text('Error submitting query: ' + (xhr.responseText || error));
+                            }
+                        });
                     }
+
                     form.classList.add('was-validated');
                 }, false);
             });
+
+            
+            $('#queryModal').on('hidden.bs.modal', function () {
+                resetForm();
+            });
+
+            // Handle Delete button click
+            $('#deleteButton').on('click', function () {
+                resetForm();
+                $('#queryModal').modal('hide'); // Close the modal
+            });
         })();
+
+        // Function to reset the form to initial state
+            function resetForm() {
+                window.location.reload();
+            }
     </script>
 </body>
 </html>
