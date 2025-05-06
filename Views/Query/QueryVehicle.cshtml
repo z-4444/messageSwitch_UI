@@ -1,0 +1,181 @@
+﻿@model messageSwitch_UI.Models.QueryVehicleModel
+
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white py-2">
+            <h5 class="mb-0">QV - Query Vehicle</h5>
+        </div>
+        <div class="card-body p-3">
+            <form id="vehicleQueryForm">
+                <div class="mb-2">
+                    <label class="form-label fw-bold">ORI <span class="text-danger">*</span></label>
+                    <input asp-for="ORI" class="form-control form-control-sm" required />
+                </div>
+
+                <small class="text-muted d-block mb-2">Enter <strong>one</strong> of the following:</small>
+
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="form-label">NCIC Number (NIC)</label>
+                        <input asp-for="NIC" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">License Plate Number (LIC)</label>
+                        <input asp-for="LIC" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-3 mt-2">
+                        <label class="form-label">License State (LIS)</label>
+                        <input asp-for="LIS" class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="row g-2 mt-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Vehicle Identification Number (VIN)</label>
+                        <input asp-for="VIN" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Make (VMA)</label>
+                        <input asp-for="VMA" class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="form-check form-check-inline mt-3">
+                    <input asp-for="IND" class="form-check-input" type="checkbox" />
+                    <label class="form-check-label">Image Indicator (IND)</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input asp-for="RSH" class="form-check-input" type="checkbox" />
+                    <label class="form-check-label">Related Search Hit (RSH)</label>
+                </div>
+
+                <div class="mt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                    <button type="reset" class="btn btn-sm btn-secondary">Clear</button>
+                </div>
+            </form>
+
+            <!-- Response Container -->
+            <div id="responseCard" class="card mt-3 d-none">
+                <div class="card-header bg-info text-white py-2">
+                    <h6 class="mb-0">Query Response</h6>
+                </div>
+                <div class="card-body p-2">
+                    <pre id="responseText" class="mb-0 text-dark"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#vehicleQueryForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '@Url.Action("QueryAjax", "Query")',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (data) {
+                    $('#responseText').text(data);
+                    $('#responseCard').removeClass('d-none');
+                },
+                error: function () {
+                    $('#responseText').text('An error occurred while processing the query.');
+                    $('#responseCard').removeClass('d-none').addClass('border-danger');
+                }
+            });
+        });
+    </script>
+}
+
+
+
+
+
+@* 
+@{
+    ViewData["Title"] = "Query Vehicle";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm rounded">
+        <div class="card-header bg-primary text-white py-2">
+            <h5 class="mb-0">QV - Query Vehicle</h5>
+        </div>
+        <div class="card-body p-3">
+            <form asp-action="Query" method="post">
+                <div class="mb-2">
+                    <label class="form-label fw-bold">ORI <span class="text-danger">*</span></label>
+                    <input asp-for="ORI" class="form-control form-control-sm" required />
+                </div>
+
+                <small class="text-muted d-block mb-2">Enter <strong>one</strong> of the following:</small>
+
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="form-label">NIC</label>
+                        <input asp-for="NIC" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">License Plate (LIC)</label>
+                        <input asp-for="LIC" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">State (LIS)</label>
+                        <input asp-for="LIS" class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="row g-2 mt-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Vehicle ID (VIN)</label>
+                        <input asp-for="VIN" class="form-control form-control-sm" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Make (VMA)</label>
+                        <input asp-for="VMA" class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="form-check form-check-inline mt-3">
+                    <input asp-for="IND" class="form-check-input" type="checkbox" />
+                    <label class="form-check-label">Image Indicator</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input asp-for="RSH" class="form-check-input" type="checkbox" />
+                    <label class="form-check-label">Related Search Hit</label>
+                </div>
+
+                <div class="mt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                    <button type="reset" class="btn btn-sm btn-secondary">Clear</button>
+                </div>
+            </form>
+
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success alert-sm mt-3 mb-0 p-2">
+                    @TempData["Message"]
+                </div>
+            }
+
+            @if (ViewBag.Response != null)
+            {
+                <div class="card mt-3">
+                    <div class="card-header bg-light py-2">
+                        <strong>Query Response</strong>
+                    </div>
+                    <div class="card-body p-2">
+                        <pre class="mb-0">@ViewBag.Response</pre>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+ *@

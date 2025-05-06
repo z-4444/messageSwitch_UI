@@ -61,5 +61,37 @@ namespace messageSwitch_UI.Controllers
                 return View("Index", model);
             }
         }
+
+        [HttpGet]
+        public IActionResult QueryVehicle()
+        {
+            return View(new QueryVehicleModel());
+        }
+
+        [HttpPost]
+        public IActionResult SubmitQuery(QueryVehicleModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Process the query (e.g., send to database or API)
+                TempData["Message"] = "Query submitted successfully!";
+                return RedirectToAction("QueryVehicle");
+            }
+
+            return View("QueryVehicle", model);
+        }
+        [HttpPost]
+        public IActionResult QueryAjax(QueryVehicleModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid input.");
+
+            // Replace with your actual lookup logic
+            string response = $"ORI: {model.ORI}\nNIC: {model.NIC}\nLIC: {model.LIC} - {model.LIS}\n" +
+                              $"VIN: {model.VIN}\nVMA: {model.VMA}\n" +
+                              $"Image Indicator: {(model.IND ? "Yes" : "No")}, RSH: {(model.RSH ? "Yes" : "No")}";
+
+            return Content(response);
+        }
     }
 }
